@@ -1,0 +1,1 @@
+This plugin has not been released yet. The changelog will start once the official version 1.0 was released
