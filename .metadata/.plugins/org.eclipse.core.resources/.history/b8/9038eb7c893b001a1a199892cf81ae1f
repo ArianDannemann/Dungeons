@@ -1,0 +1,199 @@
+package org.Dungeons.Dungeons;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import org.Dungeons.BossMob;
+import org.Dungeons.Dungeon;
+import org.Dungeons.Main;
+import org.Dungeons.PointOfInterest;
+import org.Dungeons.Selector;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
+import org.bukkit.util.Vector;
+
+import com.PluginBase.LocationHelper;
+import com.PluginBase.MathHelper;
+
+public class TestDungeon extends Dungeon {
+	
+	public TestDungeon(Main main) {
+		super(main);
+	}
+
+	private List<Location> pointOfInterestLocations = new ArrayList<>();
+	private Selector selector = new Selector();
+	
+	@Override
+	public void generate(Location dungeonLocation) {
+		Random random = new Random();
+		Vector roomSize = new Vector(3 + random.nextInt(6), 3 + random.nextInt(2), 3 + random.nextInt(6));
+		Location roomLocation = dungeonLocation;
+		
+		//Chat.getInstance().sendErrorToConsole("Dungeons", "#1", "Generating dungeon...");
+		
+		for (int i = 0; i < this.dungeonSize; i++) {
+			
+			// Generate a room with the randomly set position and size
+			generateRoom(roomLocation, roomSize);
+			
+			// Every second room should be a corridor
+			boolean nextRoomIsCorridor = i % 2 == 0;
+			
+			if (nextRoomIsCorridor) {
+				
+				// Generate a point of interest in the middle of the room
+				generatePointOfInterest(getRoomCenter(roomLocation, roomSize));
+				
+				// Spawn a random entity
+				spawnEntity(getRoomCenter(roomLocation, roomSize));
+				
+				/*
+				 * Size and location for next corridor
+				 */
+				
+				// Every room has a 30% chance of generating two corridors
+				if (MathHelper.getInstance().hasChanceHit(30)) {
+					generateRoom(getRoomCenter(roomLocation, roomSize), getNextCorridorSize());
+				}
+				
+				// Set values for the corridor
+				roomLocation = getRoomCenter(roomLocation, roomSize);
+				roomSize = getNextCorridorSize();
+			} else {
+				/*
+				 * Size and location for next room
+				 */
+				
+				// Get the distance between the start of the corridor to the end of the corridor
+				// -1 because we need to get a location inside the walls
+				Vector corridorEndOffset = new Vector(roomSize.getX() > 0 ? roomSize.getX() - 1 : roomSize.getX() + 1, 0,
+						roomSize.getZ() > 0 ? roomSize.getZ() - 1 : roomSize.getZ() + 1);
+				// Get the actual location at the end of the corridor (no relative values any more)
+				Location corridorEndLocation = LocationHelper.getInstance().offsetLocation(roomLocation, corridorEndOffset);
+				// Set a random size for the new room
+				roomSize = new Vector(3 + random.nextInt(6), 3 + random.nextInt(2), 3 + random.nextInt(6));
+				// Move the corner of the room so it's centered at the end of the corridor
+				roomLocation = LocationHelper.getInstance().offsetLocation(corridorEndLocation, new Vector(-roomSize.getX() / 2, 0, -roomSize.getX() / 2));
+			}
+		}
+		generatePointsOfInterest();
+	}
+	
+	public void spawnEntity(Location location) {
+		if (MathHelper.getInstance().hasChanceHit(this.entityPossibility)) {
+			location.getWorld().spawnEntity(location, (EntityType) this.selector.selectRandomObjectFromWeightedList(getEntityTypes()));
+		}
+	}
+
+	
+	public void generatePointsOfInterest() {
+		for (Location location : this.pointOfInterestLocations) {
+			PointOfInterest pointOfInterest = (PointOfInterest) this.selector.selectRandomObjectFromWeightedList(getPointsOfInterest());
+			//Chat.getInstance().sendErrorToConsole("Dungeons", "#-", "Generating point of interest: " + pointOfInterest.getClass().getSimpleName());
+			pointOfInterest.generatePointOfInterest(location);
+		}
+		
+		// Spawn a boss mob at a random location
+		if (MathHelper.getInstance().hasChanceHit(this.bossMobPossibility)) {
+			Random random = new Random();
+			Location location = this.pointOfInterestLocations.get(random.nextInt(this.pointOfInterestLocations.size()));
+			BossMob bossMob = (BossMob) this.selector.selectRandomObjectFromWeightedList(getBossMobs());
+			bossMob.spawn(getMain(), location);
+		}
+	}
+	
+	/**
+	 * Generate the starting location for the next corridor
+	 * @param previousRoomLocation	The starting corner of the current room
+	 * @param previousRoomSize		The size of the current room
+	 * @return						Starting location for the next corridor
+	 */
+	public Location getRoomCenter(Location roomLocation, Vector roomSize) {
+		// Get the center of the room for the corridor start location
+		return LocationHelper.getInstance().offsetLocation(roomLocation,
+				new Vector(roomSize.getX() / 2 - 1, 0, roomSize.getZ() / 2 - 1));
+	}
+	
+	/**
+	 * Generate the size for the next corridor
+	 * @return	Size for the next corridor
+	 */
+	public Vector getNextCorridorSize() {
+		// Prepare a vector for the size of the corridor
+		Vector corridorSize = new Vector(0, 3, 0);
+		// Choose between X and Z axis for the corridor
+		if (MathHelper.getInstance().hasChanceHit(50)) {
+			// Choose which direction (on the X axis) the corridor should face
+			corridorSize.setX(MathHelper.getInstance().hasChanceHit(50) ? -this.corridorLength : this.corridorLength);
+			corridorSize.setZ(2);
+		} else {
+			// Choose which direction (on the Z axis) the corridor should face
+			corridorSize.setZ(MathHelper.getInstance().hasChanceHit(50) ? -this.corridorLength : this.corridorLength);
+			corridorSize.setX(2);
+		}
+		return corridorSize;
+	}
+	
+	/**
+	 * Generate a room (with walls and stuff) based on a location and a size
+	 * @param roomLocation	One of the corners of the room
+	 * @param size			The size of room (Vector3)
+	 */
+	public void generateRoom(Location roomLocation, Vector size) {
+
+		// Essentially the other corner of the room
+		Location targetLocation = LocationHelper.getInstance().offsetLocation(roomLocation, size);
+		
+		// Get a list of all blocks in the room that should be set to air
+		List<Block> airBlocks = LocationHelper.getInstance().getBlocksBetweenLocations
+		(
+				roomLocation,
+				targetLocation
+		);
+		// Set all blocks in the list to air
+		for (Block airBlock : airBlocks) {
+			if (!isMaterialOnWhitelist(airBlock.getType())) {
+				airBlock.setType(Material.AIR);
+			}
+		}
+		
+		// Get a list of all blocks in the room that should be set to air
+		List<Block> groundBlocks = LocationHelper.getInstance().getBlocksBetweenLocations
+		(
+				LocationHelper.getInstance().offsetLocation(roomLocation, new Vector(0, -1, 0)),
+				LocationHelper.getInstance().offsetLocation(targetLocation, new Vector(0, -(targetLocation.getY() - roomLocation.getY()), 0))
+		);
+		// Set all blocks in the list to stone
+		for (Block groundBlock : groundBlocks) {
+			groundBlock.setType((Material) this.selector.selectRandomObjectFromWeightedList(getGroundMaterials()));
+		}
+		
+		// Get a list of all blocks in the room that should be set to walls
+		List<Block> wallBlocks = LocationHelper.getInstance().getBlocksBetweenLocations
+		(
+				LocationHelper.getInstance().offsetLocation(LocationHelper.getInstance().getSmallerLocation(roomLocation, targetLocation), new Vector(-1, 0, -1)),
+				LocationHelper.getInstance().offsetLocation(LocationHelper.getInstance().getBiggerLocation(roomLocation, targetLocation), new Vector(1, 1, 1))
+		);
+		// Set all blocks in the list to cobblestone if they are not cave air (center of the room)
+		for (Block wallBlock : wallBlocks) {
+			if (wallBlock.getType() != Material.CAVE_AIR && wallBlock.getType() != Material.AIR && !isMaterialOnWhitelist(wallBlock.getType())) {
+				wallBlock.setType((Material) this.selector.selectRandomObjectFromWeightedList(getWallMaterials()));
+			}
+		}
+	}
+
+	
+	@Override
+	public void setValues() {
+		this.dungeonSize = 100;
+		this.corridorLength = 10;
+		this.bossMobPossibility = 80;
+		this.entityPossibility = 80;
+		this.pointOfInterestPossibility = 30;
+	}
+	
+}

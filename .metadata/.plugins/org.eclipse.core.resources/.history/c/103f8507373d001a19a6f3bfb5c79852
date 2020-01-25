@@ -1,0 +1,19 @@
+package org.Dungeons;
+
+import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.world.ChunkPopulateEvent;
+
+import com.PluginBase.Chat;
+
+public class DungeonGenerator implements Listener {
+	public DungeonGenerator(Main main) {
+		Bukkit.getPluginManager().registerEvents(this, main);
+	}
+	
+	@EventHandler
+	public void onChunkGenerator(ChunkPopulateEvent event) {
+		Chat.getInstance().broadcastMessage("Generated Chunk at: " + event.getChunk().getX() + " " + event.getChunk().getZ());
+	}
+}

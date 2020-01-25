@@ -1,0 +1,113 @@
+package org.Dungeons.BossMobs;
+
+import org.Dungeons.BossMob;
+import org.Dungeons.Main;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
+import org.bukkit.World;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Zombie;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
+
+import com.PluginBase.ItemCreator;
+import com.PluginBase.ParticleEmitter;
+import com.PluginBase.SoundEmitter;
+
+public class Godylis extends BossMob {
+
+	private Zombie godylis;
+	private final float dropChance = 0.1f;
+
+	@Override
+	public void spawn(Main main, Location spawnLocation) {
+
+		this.main = main;
+		Bukkit.getPluginManager().registerEvents(this, main);
+
+		// Get the world in which godylis should be spawned
+		World world = spawnLocation.getWorld();
+
+		// Spawn godylis
+		this.godylis = (Zombie) world.spawnEntity(spawnLocation, EntityType.ZOMBIE);
+
+		// Set some general information
+		this.godylis.setCustomName(ChatColor.RED + "Godylis");
+		this.godylis.setRemoveWhenFarAway(false);
+
+		// Generate his equipment
+		ItemStack axe = ItemCreator.getInstance().createItem(Material.IRON_AXE, 1, ChatColor.RED + "Godylis' Axe",
+				"This mighty axe was infused\nwith the stone of Belynea");
+		axe.addEnchantment(Enchantment.DAMAGE_ALL, 1);
+		ItemStack helmet = ItemCreator.getInstance().createItem(Material.IRON_HELMET, 1,
+				ChatColor.RED + "Godylis' Helmet", "This helmet was once worn\nby the undead warrior Godylis");
+		helmet.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 2);
+		ItemStack chestplate = ItemCreator.getInstance().createItem(Material.DIAMOND_CHESTPLATE, 1,
+				ChatColor.RED + "Godylis' Chestplate", "This chestplate was once worn\nby the undead warrior Godylis");
+		chestplate.addEnchantment(Enchantment.PROTECTION_FIRE, 1);
+		ItemStack leggings = ItemCreator.getInstance().createItem(Material.LEATHER_LEGGINGS, 1,
+				ChatColor.RED + "Godylis' Pants",
+				"These pants were once worn\nby the undead warrior Godylis\nThe have a somewhat unpleasent smell to them");
+		leggings.addEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
+		ItemStack boots = ItemCreator.getInstance().createItem(Material.IRON_BOOTS, 1, ChatColor.RED + "Godylis' Boots",
+				"These boots was were worn\nby the undead warrior Godylis");
+		boots.addEnchantment(Enchantment.PROTECTION_FALL, 1);
+
+		// Set equipment
+		this.godylis.getEquipment().setItemInMainHand(axe);
+		this.godylis.getEquipment().setItemInMainHandDropChance(this.dropChance);
+		this.godylis.getEquipment().setHelmet(helmet);
+		this.godylis.getEquipment().setHelmetDropChance(this.dropChance);
+		this.godylis.getEquipment().setChestplate(chestplate);
+		this.godylis.getEquipment().setChestplateDropChance(this.dropChance);
+		this.godylis.getEquipment().setLeggings(leggings);
+		this.godylis.getEquipment().setLeggingsDropChance(this.dropChance);
+		this.godylis.getEquipment().setBoots(boots);
+		this.godylis.getEquipment().setBootsDropChance(this.dropChance);
+
+		SoundEmitter.getInstance().emitSound(world, spawnLocation, Sound.ENTITY_ZOMBIE_AMBIENT, SoundCategory.HOSTILE,
+				3, 1);
+		// SoundEmitter.getInstance().emitSound(world, spawnLocation,
+		// Sound.MUSIC_DISC_13, SoundCategory.HOSTILE, 1, 1);
+		
+		startEventTimer();
+	}
+
+	public void startEventTimer() {
+		BukkitRunnable bukkitRunnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+				
+			}
+		};
+		bukkitRunnable.runTaskTimer(main, 20, 40);
+	}
+	
+	@EventHandler
+	public void onEntityTarget(EntityTargetEvent event) {
+		if (event.getEntity().getName().equals(ChatColor.RED + "Godylis")) {
+			Entity entity = event.getEntity();
+			if (event.getTarget() == null) {
+				return;
+			}
+			Entity target = event.getTarget();
+			Vector velocity = new Vector(entity.getLocation().getX() - target.getLocation().getX(), 0.5d,
+					entity.getLocation().getZ() - target.getLocation().getZ());
+			target.setVelocity(velocity.multiply(0.25));
+			ParticleEmitter.getInstance().emitParticles(target.getLocation().getWorld(), target.getLocation(),
+					Particle.CLOUD, 30, 0, new Vector(0.5, 1, 0.5));
+			SoundEmitter.getInstance().emitSound(target.getLocation().getWorld(), target.getLocation(),
+					Sound.ENTITY_PHANTOM_FLAP, SoundCategory.PLAYERS, 1, 1);
+		}
+	}
+}

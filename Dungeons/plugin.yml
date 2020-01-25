@@ -1,0 +1,12 @@
+name: Dungeons
+main: org.Dungeons.Main
+version: 1.0
+api-version: 1.14
+depend: [PluginBase]
+commands:
+   d:
+      description: Spawns a basic dungeon (debug)
+      usage: /<command>
+   g:
+      description: Spawns Godylis (debug)
+      usage: /<command>

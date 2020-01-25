@@ -1,0 +1,23 @@
+package org.Dungeons.Dungeons;
+
+import java.util.Map;
+
+import org.Dungeons.BossMob;
+import org.Dungeons.Dungeon;
+import org.Dungeons.PointOfInterest;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
+
+public class TestDungeon extends Dungeon {
+	public TestDungeon(Material[] whitelist, Map<Material, Double> groundMaterials, Map<Material, Double> wallMaterials,
+			Map<PointOfInterest, Double> pointsOfInterest, Map<BossMob, Double> bossMobs,
+			Map<EntityType, Double> entityTypes) {
+		super(whitelist, groundMaterials, wallMaterials, pointsOfInterest, bossMobs, entityTypes);
+	}
+
+	@Override
+	public void generate(Location dungeonLocation) {
+		
+	}
+}

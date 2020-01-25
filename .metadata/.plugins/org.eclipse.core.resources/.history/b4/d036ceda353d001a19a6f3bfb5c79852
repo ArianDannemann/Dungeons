@@ -1,0 +1,10 @@
+package org.Dungeons;
+
+import org.bukkit.Bukkit;
+import org.bukkit.event.Listener;
+
+public class DungeonGenerator implements Listener {
+	public DungeonGenerator(Main main) {
+		Bukkit.getPluginManager().registerEvents(this, main);
+	}
+}

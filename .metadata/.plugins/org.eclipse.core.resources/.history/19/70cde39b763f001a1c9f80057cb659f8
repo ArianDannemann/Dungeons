@@ -1,0 +1,24 @@
+package org.Dungeons;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+
+public class EntitySpawn {
+	public EntitySpawn(Main main, EntityType entityType, Location spawnLocation, int spawnRange, boolean needsLineOfSight) {
+		BukkitRunnable bukkitRunnable = new BukkitRunnable() {
+			@Override
+			public void run() {
+				for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+					if (onlinePlayer.getLocation().distance(spawnLocation) <= spawnRange) {
+						spawnLocation.getWorld().spawnEntity(spawnLocation, entityType);
+						this.cancel();
+					}
+				}
+			}
+		};
+		bukkitRunnable.runTaskTimer(main, 100, 20);
+	}
+}
