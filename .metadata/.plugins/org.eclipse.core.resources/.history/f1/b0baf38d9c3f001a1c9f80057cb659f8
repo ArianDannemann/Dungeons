@@ -1,6 +1,6 @@
 package org.Dungeons;
 
-import org.Dungeons.Dungeons.StoneDungeon;
+import org.Dungeons.Dungeons.TestDungeon;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -13,7 +13,6 @@ import com.PluginBase.MathHelper;
 public class DungeonGenerator implements Listener {
 	
 	private Main main;
-	private final double dungeonChance = 0.05;
 	
 	public DungeonGenerator(Main main) {
 		Bukkit.getPluginManager().registerEvents(this, main);
@@ -22,13 +21,13 @@ public class DungeonGenerator implements Listener {
 
 	@EventHandler
 	public void onChunkGenerator(ChunkPopulateEvent event) {
-		if (MathHelper.getInstance().hasChanceHit(this.dungeonChance)) {
+		if (MathHelper.getInstance().hasChanceHit(0.1)) {
 			Location dungeonLocation = new Location(event.getWorld(), event.getChunk().getX() * 16, 30,
 					event.getChunk().getZ() * 16);
 			event.getWorld().strikeLightning(dungeonLocation);
 			Chat.getInstance().broadcastMessage("Generated dungeon at " + dungeonLocation.getX() + " "
 					+ dungeonLocation.getY() + " " + dungeonLocation.getZ());
-			StoneDungeon dungeon = new StoneDungeon(this.main);
+			TestDungeon dungeon = new TestDungeon(this.main);
 			dungeon.generate(dungeonLocation);
 		}
 	}

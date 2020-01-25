@@ -1,6 +1,6 @@
 package org.Dungeons;
 
-import org.Dungeons.Dungeons.StoneDungeon;
+import org.Dungeons.Dungeons.TestDungeon;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -28,7 +28,7 @@ public class DungeonGenerator implements Listener {
 			event.getWorld().strikeLightning(dungeonLocation);
 			Chat.getInstance().broadcastMessage("Generated dungeon at " + dungeonLocation.getX() + " "
 					+ dungeonLocation.getY() + " " + dungeonLocation.getZ());
-			StoneDungeon dungeon = new StoneDungeon(this.main);
+			TestDungeon dungeon = new TestDungeon(this.main);
 			dungeon.generate(dungeonLocation);
 		}
 	}
