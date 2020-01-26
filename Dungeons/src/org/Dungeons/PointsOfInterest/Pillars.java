@@ -1,6 +1,5 @@
 package org.Dungeons.PointsOfInterest;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.Dungeons.Main;
@@ -10,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.util.Vector;
 
+import com.PluginBase.Chat;
 import com.PluginBase.LocationHelper;
 
 public class Pillars extends PointOfInterest {
@@ -18,26 +18,21 @@ public class Pillars extends PointOfInterest {
 
 	private Selector selector = new Selector();
 
-	@SuppressWarnings({ "boxing", "serial" })
-	private final Map<Material, Double> collapsedMaterials = new HashMap<Material, Double>() {
-		{
-			put(Material.STONE_BRICKS, 1.0d);
-			put(Material.CRACKED_STONE_BRICKS, 1.0d);
-			put(Material.CHISELED_STONE_BRICKS, 1.0d);
-			put(Material.STONE_BRICK_WALL, 2.0d);
-			put(Material.COBBLESTONE_WALL, 2.0d);
-		}
-	};
-
-	@Override
-	public void generatePointOfInterest(Main main, Location pointOfInterestLocation) {
+	public void generatePointOfInterest(@SuppressWarnings("unused") Main main, Location pointOfInterestLocation,
+			Map<Material, Double> structureMaterials) {
 		for (int i = 0; i < this.amount; i++) {
 			Location pillarLocation = LocationHelper.getInstance().getRandomNearbyPosition(pointOfInterestLocation,
 					this.range);
 			for (int y = 0; y < 4; y++) {
 				LocationHelper.getInstance().offsetLocation(pillarLocation, new Vector(0, y, 0)).getBlock()
-						.setType((Material) this.selector.selectRandomObjectFromWeightedList(this.collapsedMaterials));
+						.setType((Material) this.selector.selectRandomObjectFromWeightedList(structureMaterials));
 			}
 		}
+	}
+
+	@Override
+	public void generatePointOfInterest(Main main, Location pointOfInterestLocation) {
+		Chat.getInstance().sendWarningMessageToConsole(main,
+				"Tried to generate 'pillars' POI without structure material table");
 	}
 }

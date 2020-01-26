@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.Dungeons.PointsOfInterest.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -21,10 +22,11 @@ public abstract class Dungeon {
 	public Selector selector = new Selector();
 
 	private Material[] whitelist;
-	private Map<Material, Double> groundMaterials, wallMaterials;
+	private Map<Material, Double> groundMaterials, wallMaterials, structureMaterials;
 	private Map<PointOfInterest, Double> pointsOfInterest;
 	private Map<BossMob, Double> bossMobs;
 	private Map<EntityType, Double> entityTypes;
+	private Map<Loot, Double> lootTable;
 
 	public int dungeonSize, corridorLength, bossMobPossibility, entityPossibility, pointOfInterestPossibility;
 
@@ -93,13 +95,27 @@ public abstract class Dungeon {
 		}
 	}
 
+	/*
+	 * Spawn point of interest structures at the previously defined locations
+	 */
 	public void generatePointsOfInterest() {
+		
+		// Loop through all locations at which a point of interest should be created
 		for (Location location : this.pointOfInterestLocations) {
+			
+			// Select a random point of interest
 			PointOfInterest pointOfInterest = (PointOfInterest) this.selector
 					.selectRandomObjectFromWeightedList(getPointsOfInterest());
-			// Chat.getInstance().sendErrorToConsole("Dungeons", "#-", "Generating point of
-			// interest: " + pointOfInterest.getClass().getSimpleName());
-			pointOfInterest.generatePointOfInterest(this.main, location);
+
+			if (pointOfInterest instanceof LootChest) {
+				((LootChest) pointOfInterest).generatePointOfInterest(this.main, location, this.lootTable);
+			} else if (pointOfInterest instanceof Collapse) {
+				((Collapse) pointOfInterest).generatePointOfInterest(this.main, location, this.structureMaterials);
+			} else if (pointOfInterest instanceof Pillars) {
+				((Pillars) pointOfInterest).generatePointOfInterest(this.main, location, this.structureMaterials);
+			} else {
+				pointOfInterest.generatePointOfInterest(this.main, location);
+			}
 		}
 
 		// Spawn a boss mob at a random location
@@ -274,5 +290,34 @@ public abstract class Dungeon {
 	 */
 	public void setMain(Main main) {
 		this.main = main;
+	}
+
+	/**
+	 * @return the lootTable
+	 */
+	public Map<Loot, Double> getLootTable() {
+		return this.lootTable;
+	}
+
+	/**
+	 * @param lootTable
+	 *            the lootTable to set
+	 */
+	public void setLootTable(Map<Loot, Double> lootTable) {
+		this.lootTable = lootTable;
+	}
+
+	/**
+	 * @return the structureMaterial
+	 */
+	public Map<Material, Double> getStructureMaterial() {
+		return this.structureMaterials;
+	}
+
+	/**
+	 * @param structureMaterial the structureMaterial to set
+	 */
+	public void setStructureMaterial(Map<Material, Double> structureMaterial) {
+		this.structureMaterials = structureMaterial;
 	}
 }

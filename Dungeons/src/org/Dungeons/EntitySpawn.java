@@ -20,15 +20,19 @@ public class EntitySpawn {
 			@Override
 			public void run() {
 				for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-					//ParticleEmitter.getInstance().emitParticles(spawnLocation.getWorld(),
-					//		LocationHelper.getInstance().offsetLocation(spawnLocation, new Vector(0, 0.25, 0)),
-					//		Particle.ENCHANTMENT_TABLE, 30, 0, new Vector(0.15, 0, 0.15));
+					// ParticleEmitter.getInstance().emitParticles(spawnLocation.getWorld(),
+					// LocationHelper.getInstance().offsetLocation(spawnLocation, new Vector(0,
+					// 0.25, 0)),
+					// Particle.ENCHANTMENT_TABLE, 30, 0, new Vector(0.15, 0, 0.15));
 					if (onlinePlayer.getLocation().distance(spawnLocation) <= spawnRange) {
-						spawnLocation.getWorld().spawnEntity(spawnLocation, entityType);
-						ParticleEmitter.getInstance().emitParticles(spawnLocation.getWorld(),
-								LocationHelper.getInstance().offsetLocation(spawnLocation, new Vector(0, 0.5, 0)),
+						Location entitySpawnLocation = spawnLocation.getBlock().getType().isSolid()
+								? LocationHelper.getInstance().getRandomNearbyPosition(spawnLocation, 5)
+								: spawnLocation;
+							entitySpawnLocation.getWorld().spawnEntity(entitySpawnLocation, entityType);
+						ParticleEmitter.getInstance().emitParticles(entitySpawnLocation.getWorld(),
+								LocationHelper.getInstance().offsetLocation(entitySpawnLocation, new Vector(0, 0.5, 0)),
 								Particle.CLOUD, 30, 0, new Vector(0.5, 1, 0.5));
-						SoundEmitter.getInstance().emitSound(spawnLocation.getWorld(), spawnLocation,
+						SoundEmitter.getInstance().emitSound(entitySpawnLocation.getWorld(), entitySpawnLocation,
 								Sound.ENTITY_PHANTOM_FLAP, SoundCategory.PLAYERS, 1, 1);
 						this.cancel();
 					}

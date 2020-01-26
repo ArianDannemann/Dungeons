@@ -5,6 +5,7 @@ import java.util.Random;
 
 import org.Dungeons.BossMob;
 import org.Dungeons.Dungeon;
+import org.Dungeons.Loot;
 import org.Dungeons.Main;
 import org.Dungeons.PointOfInterest;
 import org.Dungeons.BossMobs.Godylis;
@@ -18,6 +19,7 @@ import org.Dungeons.PointsOfInterest.UndergroundSea;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import com.PluginBase.LocationHelper;
@@ -34,7 +36,7 @@ public class StoneDungeon extends Dungeon {
 	public void setValues() {
 		this.dungeonSize = 100;
 		this.corridorLength = 10;
-		this.bossMobPossibility = 80;
+		this.bossMobPossibility = 100;
 		this.entityPossibility = 80;
 		this.pointOfInterestPossibility = 30;
 
@@ -60,6 +62,15 @@ public class StoneDungeon extends Dungeon {
 				put(Material.DIAMOND_ORE, 0.0008d);
 			}
 		});
+		setStructureMaterial(new HashMap<Material, Double>() {
+			{
+				put(Material.STONE_BRICKS, 1.0d);
+				put(Material.CRACKED_STONE_BRICKS, 1.0d);
+				put(Material.CHISELED_STONE_BRICKS, 1.0d);
+				put(Material.STONE_BRICK_WALL, 1.0d);
+				put(Material.STONE_BRICK_SLAB, 1.0d);
+			}
+		});
 		setPointsOfInterest(new HashMap<PointOfInterest, Double>() {
 			{
 				put(new LootChest(), 1.0d);
@@ -82,6 +93,26 @@ public class StoneDungeon extends Dungeon {
 				put(EntityType.SKELETON, 1.0d);
 				put(EntityType.WITCH, 1.5d);
 				put(EntityType.ILLUSIONER, 1.0d);
+			}
+		});
+		setLootTable(new HashMap<Loot, Double>() {
+			{
+				put(new Loot(new ItemStack(Material.AIR)), 2.0d);
+				put(new Loot(new ItemStack(Material.COBBLESTONE), 15), 0.75d);
+				put(new Loot(new ItemStack(Material.MOSSY_COBBLESTONE), 15), 0.75d);
+				put(new Loot(new ItemStack(Material.COBBLESTONE_SLAB), 15), 0.75d);
+				put(new Loot(new ItemStack(Material.MOSSY_COBBLESTONE_SLAB), 15), 0.75d);
+				put(new Loot(new ItemStack(Material.COAL), 10), 0.5d);
+				put(new Loot(new ItemStack(Material.IRON_INGOT), 5), 0.35d);
+				put(new Loot(new ItemStack(Material.IRON_NUGGET), 5), 0.35d);
+				put(new Loot(new ItemStack(Material.GOLD_INGOT), 5), 0.35d);
+				put(new Loot(new ItemStack(Material.GOLD_NUGGET), 5), 0.35d);
+				put(new Loot(new ItemStack(Material.GOLDEN_APPLE)), 0.05d);
+				put(new Loot(new ItemStack(Material.DIAMOND)), 0.1d);
+				put(new Loot(new ItemStack(Material.EMERALD)), 0.1d);
+				put(new Loot(new ItemStack(Material.STRING), 5), 0.75d);
+				put(new Loot(new ItemStack(Material.BREAD), 5), 0.75d);
+				put(new Loot(new ItemStack(Material.ENCHANTED_GOLDEN_APPLE)), 0.0001d);
 			}
 		});
 	}

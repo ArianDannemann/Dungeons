@@ -181,8 +181,8 @@ public class Godylis extends BossMob {
 				 * 'Heal' ability
 				 */
 				if (MathHelper.getInstance().hasChanceHit(15)) {
-					if (this.godylis.getHealth() < 15) {
-						this.godylis.setHealth(this.godylis.getHealth() + 2);
+					if (this.godylis.getHealth() <= 14) {
+						this.godylis.setHealth(this.godylis.getHealth() + 6);
 						ParticleEmitter.getInstance().emitParticles(godylisLocation.getWorld(), godylisLocation,
 								Particle.HEART, 20, 0, new Vector(0.5, 1, 0.5));
 					}
