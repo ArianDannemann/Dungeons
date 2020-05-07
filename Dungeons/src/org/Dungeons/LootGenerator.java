@@ -16,7 +16,11 @@ public class LootGenerator {
 		Random rdm = new Random();
 		
 		for (int i = 0; i < chestSize; i++) {
+			
+			// Select random loot from loot table
 			Loot loot = (Loot) this.selector.selectRandomObjectFromWeightedList(lootTable);
+			
+			// Generate item stack according to loot class
 			ItemStack item = new ItemStack(loot.item);
 			item.setAmount(rdm.nextInt(loot.maximumAmount - loot.minimumAmount + 1) + loot.minimumAmount);
 			chestContent.add(item);

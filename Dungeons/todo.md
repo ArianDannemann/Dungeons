@@ -5,3 +5,4 @@
 ## Finish up the desert dungeon
 
 - library shelfs
+- tombstones

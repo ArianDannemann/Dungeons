@@ -13,11 +13,12 @@ import com.PluginBase.VersionChecker;
  */
 public class Main extends JavaPlugin {
 	
+	public DungeonGenerator dungeonGenerator;
+	
 	@Override
 	public void onEnable() {
 		VersionChecker.getInstance().checkVersion(this, "1.2");
-		@SuppressWarnings("unused")
-		DungeonGenerator dungeonGenerator = new DungeonGenerator(this);
+		this.dungeonGenerator = new DungeonGenerator(this);
 		Chat.getInstance().sendMessageToConsole(this, "Dungeons enabled");
 	}
 	

@@ -1,7 +1,6 @@
 package org.Dungeons;
 
 import org.Dungeons.BossMobs.Godylis;
-import org.Dungeons.Dungeons.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -34,10 +33,8 @@ public class CommandHandler {
 		// Check for the command "/d"
 		if (label.equals("d")) {
 			Chat.getInstance().sendMessageToPlayer(player, "Generating dungeon...");
-			DesertDungeon testDungeon = new DesertDungeon(main);
-			testDungeon.generate(player.getLocation());
-			//DungeonGenerator dungeonGenerator = new DungeonGenerator(main);
-			//dungeonGenerator.generateDungeon(player.getLocation());
+			Dungeon dungeon = main.dungeonGenerator.getDungeonType(player.getLocation().getBlock().getBiome());
+			dungeon.generate(player.getLocation());
 		}
 		
 		// Check for the command "/g"

@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="org.bukkit.block.data.BlockData"/>
-<fullyQualifiedTypeName name="org.bukkit.block.data.Rotatable"/>
-<fullyQualifiedTypeName name="org.bukkit.block.data.Orientable"/>
-<fullyQualifiedTypeName name="org.bukkit.Axis"/>
-<fullyQualifiedTypeName name="org.bukkit.block.data.Directional"/>
-<fullyQualifiedTypeName name="org.bukkit.block.BlockFace"/>
-<fullyQualifiedTypeName name="org.Dungeons.BossMob"/>
 <fullyQualifiedTypeName name="org.bukkit.entity.Zombie"/>
 <fullyQualifiedTypeName name="org.bukkit.World"/>
 <fullyQualifiedTypeName name="com.PluginBase.ItemCreator"/>
@@ -18,25 +11,20 @@
 <fullyQualifiedTypeName name="org.bukkit.SoundCategory"/>
 <fullyQualifiedTypeName name="org.Dungeons.PointsOfInterest.UndergroundSea"/>
 <fullyQualifiedTypeName name="org.Dungeons.PointsOfInterest.Stalactites"/>
-<fullyQualifiedTypeName name="org.bukkit.block.Block"/>
 <fullyQualifiedTypeName name="java.lang.Object"/>
 <fullyQualifiedTypeName name="org.bukkit.block.Chest"/>
 <fullyQualifiedTypeName name="org.Dungeons.Loot"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
-<fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="org.Dungeons.Selector"/>
 <fullyQualifiedTypeName name="java.util.Random"/>
 <fullyQualifiedTypeName name="java.security.SecureRandom"/>
 <fullyQualifiedTypeName name="org.bukkit.inventory.ItemStack"/>
 <fullyQualifiedTypeName name="org.Dungeons.LootGenerator"/>
-<fullyQualifiedTypeName name="org.bukkit.Material"/>
-<fullyQualifiedTypeName name="java.util.Map"/>
 <fullyQualifiedTypeName name="org.Dungeons.Dungeon"/>
 <fullyQualifiedTypeName name="org.Dungeons.Dungeons.TestDungeon2"/>
 <fullyQualifiedTypeName name="org.bukkit.event.player.PlayerJoinEvent"/>
 <fullyQualifiedTypeName name="org.bukkit.event.Listener"/>
 <fullyQualifiedTypeName name="org.bukkit.event.world.ChunkPopulateEvent"/>
-<fullyQualifiedTypeName name="org.Dungeons.DungeonGenerator"/>
 <fullyQualifiedTypeName name="org.bukkit.Location"/>
 <fullyQualifiedTypeName name="org.Dungeons.EntitySpawn"/>
 <fullyQualifiedTypeName name="org.bukkit.entity.EntityType"/>
@@ -44,10 +32,8 @@
 <fullyQualifiedTypeName name="org.bukkit.Bukkit"/>
 <fullyQualifiedTypeName name="org.bukkit.event.entity.EntityTargetEvent"/>
 <fullyQualifiedTypeName name="org.bukkit.event.EventHandler"/>
-<fullyQualifiedTypeName name="com.PluginBase.Chat"/>
 <fullyQualifiedTypeName name="org.bukkit.entity.Entity"/>
 <fullyQualifiedTypeName name="org.bukkit.Particle"/>
-<fullyQualifiedTypeName name="org.bukkit.scheduler.BukkitRunnable"/>
 <fullyQualifiedTypeName name="org.bukkit.entity.Player"/>
 <fullyQualifiedTypeName name="com.PluginBase.MathHelper"/>
 <fullyQualifiedTypeName name="org.Dungeons.BossMobs.Godylis"/>
@@ -55,9 +41,23 @@
 <fullyQualifiedTypeName name="com.PluginBase.ParticleEmitter"/>
 <fullyQualifiedTypeName name="org.bukkit.potion.PotionEffect"/>
 <fullyQualifiedTypeName name="org.bukkit.potion.PotionEffectType"/>
-<fullyQualifiedTypeName name="com.PluginBase.LocationHelper"/>
 <fullyQualifiedTypeName name="org.bukkit.util.Vector"/>
 <fullyQualifiedTypeName name="org.Dungeons.Dungeons.TestDungeon"/>
 <fullyQualifiedTypeName name="org.Dungeons.Dungeons.StoneDungeon"/>
 <fullyQualifiedTypeName name="org.Dungeons.Dungeons.WaterDungeon"/>
+<fullyQualifiedTypeName name="com.PluginBase.Chat"/>
+<fullyQualifiedTypeName name="org.Dungeons.PointsOfInterest.LootChest"/>
+<fullyQualifiedTypeName name="java.util.Map"/>
+<fullyQualifiedTypeName name="org.Dungeons.PointsOfInterest.Pillars"/>
+<fullyQualifiedTypeName name="com.PluginBase.LocationHelper"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="org.bukkit.block.Block"/>
+<fullyQualifiedTypeName name="org.bukkit.Material"/>
+<fullyQualifiedTypeName name="org.Dungeons.PointsOfInterest.Shelf"/>
+<fullyQualifiedTypeName name="org.bukkit.block.Biome"/>
+<fullyQualifiedTypeName name="org.Dungeons.Dungeons.DesertDungeon"/>
+<fullyQualifiedTypeName name="org.Dungeons.DungeonGenerator"/>
+<fullyQualifiedTypeName name="org.bukkit.scheduler.BukkitRunnable"/>
+<fullyQualifiedTypeName name="java.util.TimerTask"/>
+<fullyQualifiedTypeName name="org.Dungeons.wadwadwad"/>
 </qualifiedTypeNameHistroy>
